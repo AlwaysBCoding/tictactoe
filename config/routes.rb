@@ -2,6 +2,6 @@ Tictactoe::Application.routes.draw do
 
 root :to => "pages#board"
 
-get "pages/board"
+post "/squares" => "squares#update", :as => "squares"
 
 end

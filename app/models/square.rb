@@ -2,6 +2,7 @@ class Square < ActiveRecord::Base
   attr_accessible :board_id, :val
   
   belongs_to :board
+  belongs_to :player
   
   def to_s
     val
