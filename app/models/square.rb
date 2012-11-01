@@ -4,7 +4,7 @@ class Square < ActiveRecord::Base
   belongs_to :board
   
   def to_s
-    val || "Empty"
+    val
   end
   
 end

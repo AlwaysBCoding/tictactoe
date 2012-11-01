@@ -1,7 +1,9 @@
 <div id="board">
   
 <% @board.squares.each do |square, index| %>
-  <div class="square" data-x=<%= square.x_value %> data-y=<%= square.y_value %>><%= square %></div>
+  <div class="square" data-x=<%= square.x_value %> data-y=<%= square.y_value %>>
+    <span><%= square %></span>
+  </div>
 <% end %>
 
 </div>

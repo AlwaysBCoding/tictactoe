@@ -6,20 +6,33 @@
   border: 5px solid black;
   min-height: 600px; max-height: 600px; height: 600px;
   min-width: 600px; max-width: 600px; width: 600px;
-  margin: 0 auto;
+  margin: 100px auto;
+  cursor: pointer;
 }
 
 .square {
   height: 200px;
   width: 200px;
+  position: relative;
   float: left;
   box-sizing: border-box;
+  
+  span {
+    font-family: "Helvetica";
+    font-size: 150px; font-weight: bold; color: #5CBE73;
+    text-shadow: 3px 3px rgb(24,43,4);
+    position: absolute;
+    top: 10px; left: 40px; }
+    
+  &:hover {
+    background-color: rgb(249, 119, 149); }
 }
 
+
 .square[data-x="1"], .square[data-x="2"] {
-  border-left: 3px solid blue;
+  border-left: 5px solid black;
 }
 
 .square[data-y="1"], .square[data-y="2"] {
-  border-top: 3px solid blue;
+  border-top: 5px solid black;
 }
