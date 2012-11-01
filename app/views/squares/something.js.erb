@@ -1,5 +1,8 @@
-$("div[data-x='<%= @square.x_value %>'][data-y='<%= @square.y_value %>'] span").html("<%= @square.val %>");
-$("div[data-x='<%= @square.x_value %>'][data-y='<%= @square.y_value %>'] span").parent().addClass("selected").unbind('click');
+$("div[data-x='<%= @square.x_value %>'][data-y='<%= @square.y_value %>'] span").html("<%= @square.val %>").css("opacity", 1);
+$("div[data-x='<%= @square.x_value %>'][data-y='<%= @square.y_value %>']").addClass("selected").unbind('click');
+
+$("div[data-x='1'][data-y='1'] span").html("O").animate({opacity: 1}, 800);
+$("div[data-x='1'][data-y='1']").addClass("selected").unbind('click');
 
 <% if 1 == 2 %>
   alert("The Game is Over!");

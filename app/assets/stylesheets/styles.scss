@@ -22,7 +22,8 @@
     font-size: 150px; font-weight: bold; color: #5CBE73;
     text-shadow: 3px 3px rgb(24,43,4);
     position: absolute;
-    top: 10px; left: 40px; }
+    opacity: 0;
+    top: 10px; left: 40px; } 
     
   &:hover {
     background-color: lighten(#5CBE73, 10%); }
