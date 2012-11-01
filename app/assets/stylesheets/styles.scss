@@ -26,6 +26,9 @@
     
   &:hover {
     background-color: rgb(249, 119, 149); }
+    
+  &.selected:hover {
+    background-color: #fff; };
 }
 
 
