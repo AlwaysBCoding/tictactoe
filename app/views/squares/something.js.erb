@@ -1,2 +1,7 @@
 $("div[data-x='<%= @square.x_value %>'][data-y='<%= @square.y_value %>'] span").html("<%= @square.val %>");
 $("div[data-x='<%= @square.x_value %>'][data-y='<%= @square.y_value %>'] span").parent().addClass("selected").unbind('click');
+
+<% if 1 == 2 %>
+  alert("The Game is Over!");
+  $("div").unbind().addClass("selected");
+<% end %>
