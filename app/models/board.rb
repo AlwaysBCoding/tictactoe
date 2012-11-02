@@ -70,8 +70,14 @@ class Board < ActiveRecord::Base
     #player_sq_array = Square.where(:board_id => self.id).where('val NOT NULL')#.map { |sq| [sq.x_value, sq.y_value, sq.val] } 
     board = Square.where(:board_id => self.id) 
     empty_squares = board.select { |sq| !sq.val }
+    
     player_moves_in_current_column = board.select { |sq| sq.val == "X" && sq.x_value == human_square.x_value }
-    empty_squares.find { |sq| sq.x_value == human_square.x_value } if player_moves_in_current_column.count == 2
+    column_winner = empty_squares.find { |sq| sq.x_value == human_square.x_value } if player_moves_in_current_column.count == 2
+    return column_winner if column_winner
+    
+    player_moves_in_current_row = board.select { |sq| sq.val == "X" && sq.y_value == human_square.y_value }
+    row_winner = empty_squares.find { |sq| sq.y_value == human_square.y_value } if player_moves_in_current_row.count == 2
+    return row_winner if row_winner
   end
   
   def block_player
