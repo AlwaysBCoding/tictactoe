@@ -1,8 +1,8 @@
-$("div[data-x='<%= @square.x_value %>'][data-y='<%= @square.y_value %>'] span").html("<%= @square.val %>").css("opacity", 1);
-$("div[data-x='<%= @square.x_value %>'][data-y='<%= @square.y_value %>']").addClass("selected").unbind('click');
+$("div[data-x='<%= @human_square.x_value %>'][data-y='<%= @human_square.y_value %>'] span").html("<%= @human_square.val %>").css("opacity", 1);
+$("div[data-x='<%= @human_square.x_value %>'][data-y='<%= @human_square.y_value %>']").addClass("selected").unbind('click');
 
-$("div[data-x='1'][data-y='1'] span").html("O").animate({opacity: 1}, 800);
-$("div[data-x='1'][data-y='1']").addClass("selected").unbind('click');
+$("div[data-x='<%= @computer_square.x_value %>'][data-y='<%= @computer_square.y_value %>'] span").html("<%= @computer_square.val %>").animate({opacity: 1}, 500);
+$("div[data-x='<%= @computer_square.x_value %>'][data-y='<%= @computer_square.y_value %>']").addClass("selected").unbind('click');
 
 <% if 1 == 2 %>
   alert("The Game is Over!");

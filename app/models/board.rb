@@ -31,5 +31,20 @@ class Board < ActiveRecord::Base
       square.save!
     end
   end
+  
+  def calculate_computer_move
+    return take_square(1,1) unless user_took_middle?
+    take_square(0,1)
+  end
+  
+  def user_took_middle?
+    Square.where(:board_id => self.id).where(:x_value => 1).where(:y_value => 1).first.val? ? true : false;
+  end
+  
+  def take_square(x,y)
+    square = Square.where(:board_id => self.id).where(:x_value => x).where(:y_value => y).first
+    square.val = "O"; square.save!
+    return square
+  end
 
 end
