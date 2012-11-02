@@ -78,6 +78,23 @@ class Board < ActiveRecord::Base
     player_moves_in_current_row = board.select { |sq| sq.val == "X" && sq.y_value == human_square.y_value }
     row_winner = empty_squares.find { |sq| sq.y_value == human_square.y_value } if player_moves_in_current_row.count == 2
     return row_winner if row_winner
+    
+    player_moves_in_current_diag = board.select { |sq| sq.val == "X" && diag_for(sq) == diag_for(human_square) }
+    diag_winner = empty_squares.find { |sq| diag_for(sq) == diag_for(human_square) } if player_moves_in_current_diag.count == 2
+    return diag_winner if diag_winner
+  end
+  
+  def diag_for(square)
+    case
+      when square.x_value == 2 && square.y_value == 0
+        2
+      when square.x_value == 1 && square.y_value == 1
+        2
+      when square.x_value == 0 && square.y_value == 2
+        2
+      when square.x_value == 0 && square.y_value == 0
+        1
+    end
   end
   
   def block_player
