@@ -32,17 +32,18 @@ class Board < ActiveRecord::Base
     end
   end
   
-  def calculate_computer_move
+  def calculate_computer_move(human_square)
     # Make Initial Move
     return make_initial_move if first_move?
     
     # Make Second Move
-    return computer_take_square(possible_winning_move.x_value, possible_winning_move.y_value) if possible_winning_move
+    possible_winning_square = possible_winning_move(human_square)
+    return computer_take_square(possible_winning_square.x_value, possible_winning_square.y_value) if possible_winning_square
   end
   
   def human_take_square(x,y)
     square = Square.where(:board_id => self.id).where(:x_value => x).where(:y_value => y).first
-    square.val = "X"; square.save!
+    square.update_attributes(:val => "X")
     return square
   end
   
@@ -65,12 +66,12 @@ class Board < ActiveRecord::Base
     return computer_take_square(0,0) unless square_taken?(0,0)
   end
 
-  def possible_winning_move
+  def possible_winning_move(human_square)
     #player_sq_array = Square.where(:board_id => self.id).where('val NOT NULL')#.map { |sq| [sq.x_value, sq.y_value, sq.val] } 
     board = Square.where(:board_id => self.id) 
     empty_squares = board.select { |sq| !sq.val }
-    player_moves = board.select { |sq| sq.val == "X" }
-    empty_squares.find { |sq| sq.x_value == 1 } if player_moves_in_middle_column.count == 2
+    player_moves_in_current_column = board.select { |sq| sq.val == "X" && sq.x_value == human_square.x_value }
+    empty_squares.find { |sq| sq.x_value == human_square.x_value } if player_moves_in_current_column.count == 2
   end
   
   def block_player
