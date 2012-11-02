@@ -4,6 +4,7 @@
   $("div[data-x='<%= @human_square.x_value %>'][data-y='<%= @human_square.y_value %>']").addClass("selected").unbind('click');
   
   $("div[data-x='<%= @computer_square.x_value %>'][data-y='<%= @computer_square.y_value %>'] span").html("<%= @computer_square.val %>").animate({opacity: 1}, 500, function() {
+    $.map($("span"), function(x) { x.innerHTML == "O" ? $(x).parent().addClass("highlight") : null });
     alert("The Computer has defeated you. Try again... but you won't win");
     window.location.reload(true);
   });
@@ -12,7 +13,7 @@
   $("div[data-x='<%= @human_square.x_value %>'][data-y='<%= @human_square.y_value %>'] span").html("<%= @human_square.val %>").css("opacity", 1);
   alert("Draw. Try again... but you won't win");
   window.location.reload(true);
-<% else %>
+<% else # Regular Move %>
   $("div[data-x='<%= @human_square.x_value %>'][data-y='<%= @human_square.y_value %>'] span").html("<%= @human_square.val %>").css("opacity", 1);
   $("div[data-x='<%= @human_square.x_value %>'][data-y='<%= @human_square.y_value %>']").addClass("selected").unbind('click');
   $("div[data-x='<%= @computer_square.x_value %>'][data-y='<%= @computer_square.y_value %>'] span").html("<%= @computer_square.val %>").animate({opacity: 1}, 500);
