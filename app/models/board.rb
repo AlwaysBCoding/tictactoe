@@ -42,9 +42,13 @@ class Board < ActiveRecord::Base
       return computer_take_square(winning_move.x_value, winning_move.y_value)
     end
     
-    # Block the player from winning
+    # Block the player from winning if the player has a chance to win
     possible_blocking_square = blocking_move(human_square)
     return computer_take_square(possible_blocking_square.x_value, possible_blocking_square.y_value) if possible_blocking_square
+    
+    # If neither of those scenarios are present... take a corner if it's available
+    
+    # Handle Draws
   end
   
   def human_take_square(x,y)
@@ -86,7 +90,7 @@ class Board < ActiveRecord::Base
       return column_winner if column_winner
       
       next if i == 0
-      computer_moves_in_diag = board.select { |sq| sq.val == "O" && diag_for(sq) == i }
+      computer_moves_in_diag = board.select { |sq| sq.val == "O" && ( diag_for(sq) == i || diag_for(sq) == 3 ) }
       diag_winner = empty_squares.find { |sq| diag_for(sq) == i } if computer_moves_in_diag.count == 2
       return diag_winner if diag_winner
     end
@@ -107,7 +111,7 @@ class Board < ActiveRecord::Base
     row_winner = empty_squares.find { |sq| sq.y_value == human_square.y_value } if player_moves_in_current_row.count == 2
     return row_winner if row_winner
     
-    player_moves_in_current_diag = board.select { |sq| sq.val == "X" && diag_for(sq) == diag_for(human_square) }
+    player_moves_in_current_diag = board.select { |sq| sq.val == "X" && ( diag_for(sq) == diag_for(human_square) || diag_for(sq) == 3 ) }
     diag_winner = empty_squares.find { |sq| diag_for(sq) == diag_for(human_square) } if player_moves_in_current_diag.count == 2
     return diag_winner if diag_winner
   end
@@ -116,12 +120,14 @@ class Board < ActiveRecord::Base
     case
       when square.x_value == 2 && square.y_value == 0
         2
-      when square.x_value == 1 && square.y_value == 1
-        2
       when square.x_value == 0 && square.y_value == 2
         2
       when square.x_value == 0 && square.y_value == 0
         1
+      when square.x_value == 2 && square.y_value == 2
+        1
+      when square.x_value == 1 && square.y_value == 1
+        3
     end
   end
 
