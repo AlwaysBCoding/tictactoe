@@ -76,17 +76,22 @@ class Board < ActiveRecord::Base
     board = Square.where(:board_id => self.id) 
     empty_squares = board.select { |sq| !sq.val }
     
-    computer_moves_in_top_row = board.select { |sq| sq.val == "O" && sq.y_value == 0 }
-    top_row_winner = empty_squares.find { |sq| sq.y_value == 0 } if computer_moves_in_top_row.count == 2
-    return top_row_winner if top_row_winner
+    [0, 1, 2].each do |i|
+      computer_moves_in_row = board.select { |sq| sq.val == "O" && sq.y_value == i }
+      row_winner = empty_squares.find { |sq| sq.y_value == i } if computer_moves_in_row.count == 2
+      return row_winner if row_winner
+      
+      computer_moves_in_column = board.select { |sq| sq.val == "O" && sq.x_value == i }
+      column_winner = empty_squares.find { |sq| sq.x_value == i } if computer_moves_in_column.count == 2
+      return column_winner if column_winner
+      
+      next if i == 0
+      computer_moves_in_diag = board.select { |sq| sq.val == "O" && diag_for(sq) == i }
+      diag_winner = empty_squares.find { |sq| diag_for(sq) == i } if computer_moves_in_diag.count == 2
+      return diag_winner if diag_winner
+    end
     
-    computer_moves_in_middle_row = board.select { |sq| sq.val == "O" && sq.y_value == 1}
-    middle_row_winner = empty_squares.find { |sq| sq.y_value == 1 } if computer_moves_in_middle_row.count == 2
-    return middle_row_winner if middle_row_winner
-    
-    computer_moves_in_left_column = board.select { |sq| sq.val == "O" && sq.x_value == 0 }
-    left_column_winner = empty_squares.find { |sq| sq.x_value == 0 } if computer_moves_in_left_column.count == 2
-    return left_column_winner if left_column_winner
+    return nil
     
   end
 
