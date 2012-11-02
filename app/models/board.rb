@@ -37,9 +37,10 @@ class Board < ActiveRecord::Base
     return make_initial_move if first_move?
     
     # Take a winning move if it's available
-    possible_winning_square = winning_move
-    possible_winning_square.update_attributes(:winner => true) if possible_winning_square
-    return computer_take_square(possible_winning_square.x_value, possible_winning_square.y_value) if possible_winning_square
+    if winning_move
+      winning_move.update_attributes(:winner => true) 
+      return computer_take_square(winning_move.x_value, winning_move.y_value)
+    end
     
     # Block the player from winning
     possible_blocking_square = blocking_move(human_square)
@@ -79,6 +80,10 @@ class Board < ActiveRecord::Base
     top_row_winner = empty_squares.find { |sq| sq.y_value == 0 } if computer_moves_in_top_row.count == 2
     return top_row_winner if top_row_winner
     
+    computer_moves_in_middle_row = board.select { |sq| sq.val == "O" && sq.y_value == 1}
+    middle_row_winner = empty_squares.find { |sq| sq.y_value == 1 } if computer_moves_in_middle_row.count == 2
+    return middle_row_winner if middle_row_winner
+    
     computer_moves_in_left_column = board.select { |sq| sq.val == "O" && sq.x_value == 0 }
     left_column_winner = empty_squares.find { |sq| sq.x_value == 0 } if computer_moves_in_left_column.count == 2
     return left_column_winner if left_column_winner
@@ -86,7 +91,6 @@ class Board < ActiveRecord::Base
   end
 
   def blocking_move(human_square)
-    #player_sq_array = Square.where(:board_id => self.id).where('val NOT NULL')#.map { |sq| [sq.x_value, sq.y_value, sq.val] } 
     board = Square.where(:board_id => self.id) 
     empty_squares = board.select { |sq| !sq.val }
     
