@@ -37,8 +37,8 @@ class Board < ActiveRecord::Base
     return make_initial_move if first_move?
     
     # Make Second Move
-    possible_winning_square = blocking_move(human_square)
-    return computer_take_square(possible_winning_square.x_value, possible_winning_square.y_value) if possible_winning_square
+    possible_blocking_square = blocking_move(human_square)
+    return computer_take_square(possible_blocking_square.x_value, possible_blocking_square.y_value) if possible_blocking_square
   end
   
   def human_take_square(x,y)
