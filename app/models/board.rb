@@ -47,6 +47,8 @@ class Board < ActiveRecord::Base
     return computer_take_square(possible_blocking_square.x_value, possible_blocking_square.y_value) if possible_blocking_square
     
     # If neither of those scenarios are present... take a corner if it's available
+    first_corner = take_first_corner
+    return computer_take_square(first_corner.x_value, first_corner.y_value) if first_corner
     
     # Handle Draws
   end
@@ -114,6 +116,12 @@ class Board < ActiveRecord::Base
     player_moves_in_current_diag = board.select { |sq| sq.val == "X" && ( diag_for(sq) == diag_for(human_square) || diag_for(sq) == 3 ) }
     diag_winner = empty_squares.find { |sq| diag_for(sq) == diag_for(human_square) } if player_moves_in_current_diag.count == 2
     return diag_winner if diag_winner
+  end
+  
+  def take_first_corner
+    board = Square.where(:board_id => self.id) 
+    empty_squares = board.select { |sq| !sq.val }
+    return empty_squares.find { |sq| ( sq.x_value == 0 && sq.y_value == 0 ) || ( sq.x_value == 0 && sq.y_value == 2 ) || ( sq.x_value == 2 && sq.y_value == 0 ) || ( sq.x_value == 2 && sq.y_value == 2 )}
   end
   
   def diag_for(square)
