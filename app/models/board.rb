@@ -76,6 +76,10 @@ class Board < ActiveRecord::Base
     top_row_winner = empty_squares.find { |sq| sq.y_value == 0 } if computer_moves_in_top_row.count == 2
     return top_row_winner if top_row_winner
     
+    computer_moves_in_left_column = board.select { |sq| sq.val == "O" && sq.x_value == 0 }
+    left_column_winner = empty_squares.find { |sq| sq.x_value == 0 } if computer_moves_in_left_column.count == 2
+    return left_column_winner if left_column_winner
+    
   end
 
   def blocking_move(human_square)
