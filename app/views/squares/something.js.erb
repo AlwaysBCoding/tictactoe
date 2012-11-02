@@ -4,7 +4,7 @@ $("div[data-x='<%= @human_square.x_value %>'][data-y='<%= @human_square.y_value 
 $("div[data-x='<%= @computer_square.x_value %>'][data-y='<%= @computer_square.y_value %>'] span").html("<%= @computer_square.val %>").animate({opacity: 1}, 500);
 $("div[data-x='<%= @computer_square.x_value %>'][data-y='<%= @computer_square.y_value %>']").addClass("selected").unbind('click');
 
-<% if 1 == 2 %>
-  alert("The Game is Over!");
+<% if @computer_square.winner %>
+  alert("The Computer has defeated you, try again... but you won't win");
   $("div").unbind().addClass("selected");
 <% end %>

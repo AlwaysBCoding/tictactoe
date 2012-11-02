@@ -16,7 +16,7 @@ describe Board do
       board.blocking_move(human_square).should == Square.where(:board_id => board.id).where(:x_value => 0).where(:y_value => 0).first
     end
     
-    it 'returns the vertical left black for [0,0], [1,0] ' do
+    it 'returns the vertical left block for [0,0], [1,0] ' do
       board = Board.create
       board.human_take_square(0,0)
       human_square = board.human_take_square(1,0)
@@ -40,7 +40,10 @@ describe Board do
       board.human_take_square(1,2)
       board.computer_take_square(1,0)
       human_square = board.human_take_square(0,1)
-      board.calculate_computer_move(human_square).should == Square.where(:board_id => board.id).where(:x_value => 2).where(:y_value => 0).first
+      computer_move = board.calculate_computer_move(human_square)
+      
+      computer_move.should == Square.where(:board_id => board.id).where(:x_value => 2).where(:y_value => 0).first
+      computer_move.should be_winner
     end
     
     it 'takes the winning move for [1,1], [2,1], [2,0] ' do
@@ -50,7 +53,10 @@ describe Board do
       board.human_take_square(2,1)
       board.computer_take_square(0,1)
       human_square = board.human_take_square(2,0)
-      board.calculate_computer_move(human_square).should == Square.where(:board_id => board.id).where(:x_value => 0).where(:y_value => 2).first
+      computer_move = board.calculate_computer_move(human_square)
+      
+      computer_move.should == Square.where(:board_id => board.id).where(:x_value => 0).where(:y_value => 2).first
+      computer_move.should be_winner
     end
   end
 

@@ -35,10 +35,13 @@ class Board < ActiveRecord::Base
   def calculate_computer_move(human_square)
     # Make Initial Move
     return make_initial_move if first_move?
-  
+    
+    # Take a winning move if it's available
     possible_winning_square = winning_move
+    possible_winning_square.update_attributes(:winner => true) if possible_winning_square
     return computer_take_square(possible_winning_square.x_value, possible_winning_square.y_value) if possible_winning_square
     
+    # Block the player from winning
     possible_blocking_square = blocking_move(human_square)
     return computer_take_square(possible_blocking_square.x_value, possible_blocking_square.y_value) if possible_blocking_square
   end
@@ -46,12 +49,12 @@ class Board < ActiveRecord::Base
   def human_take_square(x,y)
     square = Square.where(:board_id => self.id).where(:x_value => x).where(:y_value => y).first
     square.update_attributes(:val => "X")
-    return square
+    return square 
   end
   
   def computer_take_square(x,y)
     square = Square.where(:board_id => self.id).where(:x_value => x).where(:y_value => y).first
-    square.val = "O"; square.save!
+    square.update_attributes(:val => "O")
     return square
   end
   
@@ -111,9 +114,6 @@ class Board < ActiveRecord::Base
       when square.x_value == 0 && square.y_value == 0
         1
     end
-  end
-  
-  def block_player
   end
 
 end
