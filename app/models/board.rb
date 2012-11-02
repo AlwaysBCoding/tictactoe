@@ -37,7 +37,7 @@ class Board < ActiveRecord::Base
     return make_initial_move if first_move?
     
     # Make Second Move
-    return block_player(x,y) if player_chance_to_win?
+    return computer_take_square(possible_winning_move.x_value, possible_winning_move.y_value) if possible_winning_move
   end
   
   def human_take_square(x,y)
@@ -64,16 +64,13 @@ class Board < ActiveRecord::Base
     return computer_take_square(1,1) unless square_taken?(1,1)
     return computer_take_square(0,0) unless square_taken?(0,0)
   end
-  
-  def player_chance_to_win?
-  end
 
   def possible_winning_move
     #player_sq_array = Square.where(:board_id => self.id).where('val NOT NULL')#.map { |sq| [sq.x_value, sq.y_value, sq.val] } 
     board = Square.where(:board_id => self.id) 
-    player_moves_in_middle_column = board.select { |sq| sq.val == "X" && sq.x_value == 1 }
     empty_squares = board.select { |sq| !sq.val }
-    empty_squares.find { |sq| sq.x_value == 1 } #if player_moves_in_middle_column.count == 2
+    player_moves = board.select { |sq| sq.val == "X" }
+    empty_squares.find { |sq| sq.x_value == 1 } if player_moves_in_middle_column.count == 2
   end
   
   def block_player
