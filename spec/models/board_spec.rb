@@ -31,5 +31,17 @@ describe Board do
     end
 
   end
+  
+  describe '#calculate_computer_move' do
+    it 'returns the blank square for [1,1], [1,2], [0,1] ' do
+      board = Board.create
+      board.human_take_square(1,1)
+      board.computer_take_square(0,0)
+      board.human_take_square(1,2)
+      board.computer_take_square(1,0)
+      human_square = board.human_take_square(0,1)
+      board.calculate_computer_move(human_square).should == Square.where(:board_id => board.id).where(:x_value => 2).where(:y_value => 0).first
+    end
+  end
 
 end

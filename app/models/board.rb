@@ -35,8 +35,10 @@ class Board < ActiveRecord::Base
   def calculate_computer_move(human_square)
     # Make Initial Move
     return make_initial_move if first_move?
+  
+    possible_winning_square = winning_move
+    return computer_take_square(possible_winning_square.x_value, possible_winning_square.y_value) if possible_winning_square
     
-    # Make Second Move
     possible_blocking_square = blocking_move(human_square)
     return computer_take_square(possible_blocking_square.x_value, possible_blocking_square.y_value) if possible_blocking_square
   end
@@ -64,6 +66,16 @@ class Board < ActiveRecord::Base
   def make_initial_move
     return computer_take_square(1,1) unless square_taken?(1,1)
     return computer_take_square(0,0) unless square_taken?(0,0)
+  end
+  
+  def winning_move
+    board = Square.where(:board_id => self.id) 
+    empty_squares = board.select { |sq| !sq.val }
+    
+    computer_moves_in_top_row = board.select { |sq| sq.val == "O" && sq.y_value == 0 }
+    top_row_winner = empty_squares.find { |sq| sq.y_value == 0 } if computer_moves_in_top_row.count == 2
+    return top_row_winner if top_row_winner
+    
   end
 
   def blocking_move(human_square)
