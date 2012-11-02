@@ -2,7 +2,7 @@ class Board < ActiveRecord::Base
   
   has_many :squares
   after_save :create_squares
-  
+        
   def create_squares
     9.times do |i|
       square = Square.new({
@@ -33,18 +33,50 @@ class Board < ActiveRecord::Base
   end
   
   def calculate_computer_move
-    return take_square(1,1) unless user_took_middle?
-    take_square(0,1)
+    # Make Initial Move
+    return make_initial_move if first_move?
+    
+    # Make Second Move
+    return block_player(x,y) if player_chance_to_win?
   end
   
-  def user_took_middle?
-    Square.where(:board_id => self.id).where(:x_value => 1).where(:y_value => 1).first.val? ? true : false;
+  def human_take_square(x,y)
+    square = Square.where(:board_id => self.id).where(:x_value => x).where(:y_value => y).first
+    square.val = "X"; square.save!
+    return square
   end
   
-  def take_square(x,y)
+  def computer_take_square(x,y)
     square = Square.where(:board_id => self.id).where(:x_value => x).where(:y_value => y).first
     square.val = "O"; square.save!
     return square
+  end
+  
+  def square_taken?(x,y)
+    Square.where(:board_id => self.id).where(:x_value => x).where(:y_value => y).first.val? ? true : false;
+  end
+  
+  def first_move?
+    Square.where(:board_id => self.id).where(:val => nil).count == 8 ? true : false;
+  end
+
+  def make_initial_move
+    return computer_take_square(1,1) unless square_taken?(1,1)
+    return computer_take_square(0,0) unless square_taken?(0,0)
+  end
+  
+  def player_chance_to_win?
+  end
+
+  def possible_winning_move
+    #player_sq_array = Square.where(:board_id => self.id).where('val NOT NULL')#.map { |sq| [sq.x_value, sq.y_value, sq.val] } 
+    board = Square.where(:board_id => self.id) 
+    player_moves_in_middle_column = board.select { |sq| sq.val == "X" && sq.x_value == 1 }
+    empty_squares = board.select { |sq| !sq.val }
+    empty_squares.find { |sq| sq.x_value == 1 } #if player_moves_in_middle_column.count == 2
+  end
+  
+  def block_player
   end
 
 end
