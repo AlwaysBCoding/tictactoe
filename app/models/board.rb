@@ -51,6 +51,7 @@ class Board < ActiveRecord::Base
     return computer_take_square(first_corner.x_value, first_corner.y_value) if first_corner
     
     # Handle Draws
+    return nil
   end
   
   def human_take_square(x,y)
