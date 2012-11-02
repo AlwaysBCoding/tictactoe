@@ -1,10 +1,12 @@
 $("div[data-x='<%= @human_square.x_value %>'][data-y='<%= @human_square.y_value %>'] span").html("<%= @human_square.val %>").css("opacity", 1);
 $("div[data-x='<%= @human_square.x_value %>'][data-y='<%= @human_square.y_value %>']").addClass("selected").unbind('click');
 
-$("div[data-x='<%= @computer_square.x_value %>'][data-y='<%= @computer_square.y_value %>'] span").html("<%= @computer_square.val %>").animate({opacity: 1}, 500);
-$("div[data-x='<%= @computer_square.x_value %>'][data-y='<%= @computer_square.y_value %>']").addClass("selected").unbind('click');
-
 <% if @computer_square.winner %>
-  alert("The Computer has defeated you, try again... but you won't win");
   $("div").unbind().addClass("selected");
+  $("div[data-x='<%= @computer_square.x_value %>'][data-y='<%= @computer_square.y_value %>'] span").html("<%= @computer_square.val %>").animate({opacity: 1}, 500, function() {
+    alert("The Computer has defeated you, try again... but you won't win");
+  });
+<% else %>
+  $("div[data-x='<%= @computer_square.x_value %>'][data-y='<%= @computer_square.y_value %>'] span").html("<%= @computer_square.val %>").animate({opacity: 1}, 500);
+  $("div[data-x='<%= @computer_square.x_value %>'][data-y='<%= @computer_square.y_value %>']").addClass("selected").unbind('click');
 <% end %>
