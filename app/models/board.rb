@@ -46,7 +46,10 @@ class Board < ActiveRecord::Base
     blocking_square = blocking_move(human_square)
     return computer_take_square(blocking_square.x_value, blocking_square.y_value) if blocking_square
     
-    # If neither of those scenarios are present... take a corner if it's available
+    # If the user tries a two corner opening move, block it
+    return computer_take_square(prevent_two_corner_win.x_value, prevent_two_corner_win.y_value) if prevent_two_corner_win
+    
+    # If none of those scenarios are present... take a corner if it's available
     first_corner = take_first_corner
     return computer_take_square(first_corner.x_value, first_corner.y_value) if first_corner
     
@@ -121,6 +124,20 @@ class Board < ActiveRecord::Base
     player_moves_in_current_diag = board.select { |sq| sq.val == "X" && ( ( diag_for(sq) == diag_for(human_square) && diag_for(human_square) )|| diag_for(sq) == 3 ) }
     diag_winner = empty_squares.find { |sq| diag_for(sq) == diag_for(human_square) } if player_moves_in_current_diag.count == 2
     return diag_winner if diag_winner
+
+  end
+  
+  def prevent_two_corner_win
+    board = Square.where(:board_id => self.id) 
+    user_squares = board.select { |sq| sq.val == "X" }
+    empty_squares = board.select { |sq| !sq.val }
+    
+    scenario1 = user_squares.select { |sq| (sq.x_value == 0 && sq.y_value == 0) || (sq.x_value == 2 && sq.y_value == 2) }
+    scenario2 = user_squares.select { |sq| (sq.x_value == 2 && sq.y_value == 0) || (sq.x_value == 0 && sq.y_value == 2) }
+    
+    if user_squares.count == 2 && ( scenario1 || scenario2 )
+      return empty_squares.find { |sq| sq.x_value == 1 && sq.y_value == 0 }
+    end
 
   end
   
