@@ -50,7 +50,7 @@ class Board < ActiveRecord::Base
     first_corner = take_first_corner
     return computer_take_square(first_corner.x_value, first_corner.y_value) if first_corner
     
-    # should now check if a side is open
+    # now check if there's a side that's avaialble
     first_side = take_first_side
     return computer_take_square(first_side.x_value, first_side.y_value) if first_side
     

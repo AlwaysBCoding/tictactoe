@@ -8,14 +8,17 @@
     alert("The Computer has defeated you. Try again... but you won't win");
     window.location.reload(true);
   });
+  
 <% elsif !@computer_square # Draw Game %>  
   $("div").unbind().addClass("selected");
   $("div[data-x='<%= @human_square.x_value %>'][data-y='<%= @human_square.y_value %>'] span").html("<%= @human_square.val %>").css("opacity", 1);
   alert("Draw. Try again... but you won't win");
   window.location.reload(true);
+
 <% else # Regular Move %>
   $("div[data-x='<%= @human_square.x_value %>'][data-y='<%= @human_square.y_value %>'] span").html("<%= @human_square.val %>").css("opacity", 1);
   $("div[data-x='<%= @human_square.x_value %>'][data-y='<%= @human_square.y_value %>']").addClass("selected").unbind('click');
   $("div[data-x='<%= @computer_square.x_value %>'][data-y='<%= @computer_square.y_value %>'] span").html("<%= @computer_square.val %>").animate({opacity: 1}, 500);
   $("div[data-x='<%= @computer_square.x_value %>'][data-y='<%= @computer_square.y_value %>']").addClass("selected").unbind('click');
+  
 <% end %>

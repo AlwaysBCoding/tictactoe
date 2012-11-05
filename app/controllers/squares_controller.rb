@@ -4,7 +4,7 @@ class SquaresController < ApplicationController
     board = Board.find(params["board"].to_i)
     @human_square = board.human_take_square(params["x_value"], params["y_value"])
     @computer_square = board.calculate_computer_move(@human_square)
-    render "something"
+    render "response"
   end
   
 end
