@@ -42,13 +42,19 @@ class Board < ActiveRecord::Base
       return computer_take_square(winning_move.x_value, winning_move.y_value)
     end
     
+    ### BUGGG Tries to block on 2nd move even if it should really just take the corner
+    
     # Block the player from winning if the player has a chance to win
-    possible_blocking_square = blocking_move(human_square)
-    return computer_take_square(possible_blocking_square.x_value, possible_blocking_square.y_value) if possible_blocking_square
+    blocking_square = blocking_move(human_square)
+    return computer_take_square(blocking_square.x_value, blocking_square.y_value) if blocking_square
     
     # If neither of those scenarios are present... take a corner if it's available
     first_corner = take_first_corner
     return computer_take_square(first_corner.x_value, first_corner.y_value) if first_corner
+    
+    # should now check if a side is open
+    first_side = take_first_side
+    return computer_take_square(first_side.x_value, first_side.y_value) if first_side
     
     # Handle Draws
     return nil
@@ -123,6 +129,12 @@ class Board < ActiveRecord::Base
     board = Square.where(:board_id => self.id) 
     empty_squares = board.select { |sq| !sq.val }
     return empty_squares.find { |sq| ( sq.x_value == 0 && sq.y_value == 0 ) || ( sq.x_value == 0 && sq.y_value == 2 ) || ( sq.x_value == 2 && sq.y_value == 0 ) || ( sq.x_value == 2 && sq.y_value == 2 )}
+  end
+  
+  def take_first_side
+    board = Square.where(:board_id => self.id) 
+    empty_squares = board.select { |sq| !sq.val }
+    return empty_squares.find { |sq| ( sq.x_value == 1 && sq.y_value == 0 ) || ( sq.x_value == 2 && sq.y_value == 1 ) || ( sq.x_value == 1 && sq.y_value == 2 ) || ( sq.x_value == 0 && sq.y_value == 2 )}
   end
   
   def diag_for(square)
