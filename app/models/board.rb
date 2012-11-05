@@ -135,7 +135,7 @@ class Board < ActiveRecord::Base
     scenario1 = user_squares.select { |sq| (sq.x_value == 0 && sq.y_value == 0) || (sq.x_value == 2 && sq.y_value == 2) }
     scenario2 = user_squares.select { |sq| (sq.x_value == 2 && sq.y_value == 0) || (sq.x_value == 0 && sq.y_value == 2) }
     
-    if user_squares.count == 2 && ( scenario1 || scenario2 )
+    if user_squares.count == 2 && ( scenario1.count == 2 || scenario2.count == 2 )
       return empty_squares.find { |sq| sq.x_value == 1 && sq.y_value == 0 }
     end
 
