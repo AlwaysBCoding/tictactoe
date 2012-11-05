@@ -1,3 +1,13 @@
+header {
+  font-family: 'Kaushan Script', cursive;
+  h1 { margin-top: 5px; margin-bottom: 5px;}
+  a {
+    text-decoration: none;
+    color: #08C;
+    font-size: 20px;
+  }
+}
+
 #wrapper {
   position: relative;
 }
@@ -6,7 +16,7 @@
   border: 5px solid black;
   min-height: 600px; max-height: 600px; height: 600px;
   min-width: 600px; max-width: 600px; width: 600px;
-  margin: 100px auto;
+  margin: 0 auto;
   cursor: pointer;
 }
 

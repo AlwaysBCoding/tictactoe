@@ -5,8 +5,14 @@
   <%= stylesheet_link_tag    "application", :media => "all" %>
   <%= javascript_include_tag "application" %>
   <%= csrf_meta_tags %>
+  <link href='http://fonts.googleapis.com/css?family=Kaushan+Script' rel='stylesheet' type='text/css'>
 </head>
 <body>
+  
+<header>
+  <h1>Tic-Tac-Toe by Jordan Leigh</h1>
+  <p><a href="https://github.com/AlwaysBCoding/tictactoe">View the Source Code on Github</a></p>
+</header>  
 
 <div id="wrapper">
   <%= yield %>
