@@ -41,9 +41,7 @@ class Board < ActiveRecord::Base
       winning_move.update_attributes(:winner => true) 
       return computer_take_square(winning_move.x_value, winning_move.y_value)
     end
-    
-    ### BUGGG Tries to block on 2nd move even if it should really just take the corner
-    
+        
     # Block the player from winning if the player has a chance to win
     blocking_square = blocking_move(human_square)
     return computer_take_square(blocking_square.x_value, blocking_square.y_value) if blocking_square
@@ -120,9 +118,10 @@ class Board < ActiveRecord::Base
     row_winner = empty_squares.find { |sq| sq.y_value == human_square.y_value } if player_moves_in_current_row.count == 2
     return row_winner if row_winner
     
-    player_moves_in_current_diag = board.select { |sq| sq.val == "X" && ( diag_for(sq) == diag_for(human_square) || diag_for(sq) == 3 ) }
+    player_moves_in_current_diag = board.select { |sq| sq.val == "X" && ( ( diag_for(sq) == diag_for(human_square) && diag_for(human_square) )|| diag_for(sq) == 3 ) }
     diag_winner = empty_squares.find { |sq| diag_for(sq) == diag_for(human_square) } if player_moves_in_current_diag.count == 2
     return diag_winner if diag_winner
+
   end
   
   def take_first_corner
