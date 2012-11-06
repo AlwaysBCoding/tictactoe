@@ -145,7 +145,11 @@ class Board < ActiveRecord::Base
     board = Square.where(:board_id => self.id)
     human_squares = board.select { |sq| sq.val == "X" }  
     empty_squares = board.select { |sq| !sq.val }
-    unless empty_squares.count == 6 && human_squares.select { |sq| (sq.x_value == 1 && sq.y_value == 2) || (sq.x_value == 2 && sq.y_value == 1) }.count == 2
+    
+    scenario_1 = empty_squares.count == 6 && human_squares.select { |sq| (sq.x_value == 1 && sq.y_value == 2) || (sq.x_value == 2 && sq.y_value == 1) }.count == 2
+    scenario_2 = empty_squares.count == 6 && human_squares.select { |sq| (sq.x_value == 0 && sq.y_value == 2) || (sq.x_value == 2 && sq.y_value == 1) }.count == 2
+    
+    unless scenario_1 || scenario_2
       return empty_squares.find { |sq| ( sq.x_value == 0 && sq.y_value == 0 ) || ( sq.x_value == 0 && sq.y_value == 2 ) || ( sq.x_value == 2 && sq.y_value == 0 ) || ( sq.x_value == 2 && sq.y_value == 2 )}
     else
       return empty_squares.find { |sq| ( sq.x_value == 2 && sq.y_value == 2 ) }
