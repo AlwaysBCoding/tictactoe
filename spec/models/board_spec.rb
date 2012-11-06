@@ -150,6 +150,16 @@ describe Board do
       
       computer_move = board.calculate_computer_move(human_square)
       computer_move.should == Square.where(:board_id => board.id).where(:x_value => 0).where(:y_value => 0).first
+    end
+    
+    it "takes the bottom right corner at [1,2], [2,1]" do
+      board = Board.create
+      board.human_take_square(1,2)
+      board.computer_take_square(1,1)
+      human_square = board.human_take_square(2,1)
+      
+      computer_move = board.calculate_computer_move(human_square)
+      computer_move.should == Square.where(:board_id => board.id).where(:x_value => 2).where(:y_value => 2).first
       
     end
     
